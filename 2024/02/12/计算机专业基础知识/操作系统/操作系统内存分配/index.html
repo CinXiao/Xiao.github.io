@@ -196,7 +196,7 @@
 
             <span class="meta-info-item post-update-date">
                 <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                <span class="datetime" data-updated="Mon Feb 12 2024 20:55:58 GMT+0800">2024-02-12 20:55:58</span>
+                <span class="datetime" data-updated="Mon Feb 12 2024 21:26:33 GMT+0800">2024-02-12 21:26:33</span>
             </span>
         
 
@@ -231,11 +231,39 @@
                 <div class="post-content keep-markdown-body">
                     
 
-                    <h1 id="操作系统中的内存分配"><a href="#操作系统中的内存分配" class="headerlink" title="操作系统中的内存分配"></a>操作系统中的内存分配</h1><ul>
-<li><h2 id="连续内存分配策略"><a href="#连续内存分配策略" class="headerlink" title="连续内存分配策略"></a>连续内存分配策略</h2></li>
-<li><h2 id="非连续内存分配策略"><a href="#非连续内存分配策略" class="headerlink" title="非连续内存分配策略"></a>非连续内存分配策略</h2></li>
-</ul>
+                    <h1 id="连续分配方式"><a href="#连续分配方式" class="headerlink" title="连续分配方式"></a>连续分配方式</h1><h4 id="单一连续分配（过时"><a href="#单一连续分配（过时" class="headerlink" title="单一连续分配（过时"></a>单一连续分配（过时</h4><p> 整个内存只能有一个程序。</p>
+<p> 内存被分为 系统区和用户区，系统区用于装操作系统的相关数据，用户区用于装程序。由于整个用户区只能有一个程序，因此内存利用率极差。<br>   <img    
+                       lazyload
+                       alt="image"
+                       data-src="20200927232934191.png"
+                        
+                 ></p>
+<h4 id="固定分区分配"><a href="#固定分区分配" class="headerlink" title="固定分区分配"></a>固定分区分配</h4><p>固定分区能够支持多道程序。</p>
+<p>原理是：把用户区进一步分成多个分区，每一个分区存放一个进程。固定分区分配又分成两种：一种是各个分区大小相同，另一种是各个分区大小不相等。</p>
+   <img    
+                       lazyload
+                       alt="image"
+                       data-src="20200927233223124.png"
+                        
+                 >
 
+<p>分区大小不等有利于存放大小不同的进程。</p>
+<p>当操作系统用到分区技术时，都会维护一个数据结构—-分区说明表，来实现各个分区的分配与回收，每个表项对应一个分区，通常按分区大小排列，用数组或链表都可以表示这张表，表具体如下：</p>
+   <img    
+                       lazyload
+                       alt="image"
+                       data-src="20200927234135575.png"
+                        
+                 >
+
+<p>优点：实现简单，无外部碎片。(外部碎片即用户区里有未被用到的地方，由于分区是刚好占满用户去的，故没有外部碎片)</p>
+<p>缺点：存在内部碎片(即分区内因进程没占满分区而多出来未被使用的地方)；而且遇到一个大进程，以致所有分区都放不下，那就只能使用覆盖技术，覆盖技术由于会把进程的某些段从外存和内存之间调出调入，因此会增加I&#x2F;O开销。</p>
+<h4 id="动态分区分配"><a href="#动态分区分配" class="headerlink" title="动态分区分配"></a>动态分区分配</h4><p>亮点：这种分区方式不会预先划分内存分区，而是在进程装入内存时，再动态地根据进程的大小建立分区。使得分区的大小刚好适合进程使用。</p>
+<p>存在的问题：（如下图）</p>
+<p>由于进程在运行完后，会退出内存，留下空余的碎片，如下面的6MB和10MB和4MB。此时若 有一个 20MB的进程进来，则虽然空闲空间刚刚好有20MB，但依然是放不下的。这就是存在的问题，为了解决这个问题，只能引入拼凑技术。</p>
+<p>拼凑技术：</p>
+<p>拼接技术&#x2F;紧凑技术：移动内存中所有已经分配区到内存的一端，将其余空闲分区合并为一个大的空闲分区</p>
+<h1 id="非连续内存分配策略"><a href="#非连续内存分配策略" class="headerlink" title="非连续内存分配策略"></a>非连续内存分配策略</h1>
                 </div>
 
                 
@@ -300,7 +328,7 @@
             <div class="pc-post-toc right-toc">
                 <div class="post-toc-wrap border-box">
     <div class="post-toc border-box">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-text">操作系统中的内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="nav-text">连续内存分配策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="nav-text">非连续内存分配策略</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%E6%96%B9%E5%BC%8F"><span class="nav-text">连续分配方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%B8%80%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%EF%BC%88%E8%BF%87%E6%97%B6"><span class="nav-text">单一连续分配（过时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">固定分区分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">动态分区分配</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="nav-text">非连续内存分配策略</span></a></li></ol>
     </div>
 </div>
 
@@ -464,7 +492,7 @@
             <div class="tablet-post-toc">
                 <div class="post-toc-wrap border-box">
     <div class="post-toc border-box">
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-text">操作系统中的内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="nav-text">连续内存分配策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="nav-text">非连续内存分配策略</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%E6%96%B9%E5%BC%8F"><span class="nav-text">连续分配方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%B8%80%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%EF%BC%88%E8%BF%87%E6%97%B6"><span class="nav-text">单一连续分配（过时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">固定分区分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D"><span class="nav-text">动态分区分配</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="nav-text">非连续内存分配策略</span></a></li></ol>
     </div>
 </div>
 
